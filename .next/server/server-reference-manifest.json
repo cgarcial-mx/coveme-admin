@@ -1,0 +1,28 @@
+{
+  "node": {
+    "40966a78ee99858892c4a7dd6c0990181ac8670909": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.2.4_react-dom@19.1.1_react@19.1.1__react@19.1.1/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Fcarlos%2FDocumentos%2Fcoveme%2Fcoveme-admin%2Fcomponents%2Flogin.server.ts%22%2C%5B%7B%22id%22%3A%2240966a78ee99858892c4a7dd6c0990181ac8670909%22%2C%22exportedName%22%3A%22login%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    },
+    "00b489fc4fab9f8286948b20ce227817a6d7083760": {
+      "workers": {
+        "app/(app)/dashboard/page": {
+          "moduleId": "(rsc)/./node_modules/.pnpm/next@15.2.4_react-dom@19.1.1_react@19.1.1__react@19.1.1/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2Fhome%2Fcarlos%2FDocumentos%2Fcoveme%2Fcoveme-admin%2Fapp%2F(app)%2Fserver-actions.ts%22%2C%5B%7B%22id%22%3A%2200b489fc4fab9f8286948b20ce227817a6d7083760%22%2C%22exportedName%22%3A%22logout%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(app)/dashboard/page": "rsc"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "MPo394vhyoMLWFP2GPe4flPbqGNhXJlt604Kgy9OL54="
+}
