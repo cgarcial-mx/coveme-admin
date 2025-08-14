@@ -4,14 +4,22 @@ export interface LoginCredentials {
   remember?: boolean;
 }
 
-export interface LoginResponse {
+export interface ServerLoginResponse {
   access: string;
   refresh: string;
   user: {
     id: number;
+    username: string;
     email: string;
     first_name: string;
     last_name: string;
+    role: string;
+    client: number;
+    client_name: string;
+  };
+  permissions: {
+    endpoints: string[];
+    categories: string[];
   };
 }
 
@@ -20,9 +28,22 @@ export interface ApiErrorResponse {
   code?: string;
 }
 
-export interface ServerLoginResponse {
+export interface LoginResponse {
   ok: boolean;
-  user?: { id: number; email: string; first_name: string; last_name: string };
+  user?: {
+    id: number;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    role: string;
+    client: number;
+    client_name: string;
+  };
+  permissions: {
+    endpoints: string[];
+    categories: string[];
+  };
   message?: string;
   code?: string;
 }

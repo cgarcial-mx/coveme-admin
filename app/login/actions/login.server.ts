@@ -3,12 +3,10 @@
 import { handleApiError } from '@/lib/api/handle-api-error';
 import { LoginSchema } from '@/schemas/auth/login.schema';
 import { authService } from '@/services/auth.service';
-import { ServerLoginResponse } from '@/types/auth';
+import { ServerLoginResponse, LoginResponse } from '@/types/auth';
 import { cookies } from 'next/headers';
 
-export async function login(
-  credentials: LoginSchema,
-): Promise<ServerLoginResponse> {
+export async function login(credentials: LoginSchema): Promise<LoginResponse> {
   try {
     const res = await authService.authenticate(credentials);
 
@@ -30,8 +28,12 @@ export async function login(
 
     c.set('auth-remember', credentials.remember ? '1' : '0', { path: '/' });
 
-    return { ok: true, user: res.user };
+    return {
+      ok: true,
+      user: res.user,
+      permissions: res.permissions,
+    };
   } catch (error) {
-    return handleApiError(error) as ServerLoginResponse;
+    return handleApiError(error) as LoginResponse;
   }
 }

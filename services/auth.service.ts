@@ -1,6 +1,6 @@
 import { apiClient } from '@/lib/api/api-instance';
 import { handleApiError } from '@/lib/api/handle-api-error';
-import { LoginCredentials, LoginResponse } from '@/types/auth';
+import { LoginCredentials, ServerLoginResponse } from '@/types/auth';
 
 export interface User {
   id: number;
@@ -12,11 +12,17 @@ export interface User {
 }
 
 export const authService = {
-  async authenticate(credentials: LoginCredentials): Promise<LoginResponse> {
+  async authenticate(
+    credentials: LoginCredentials,
+  ): Promise<ServerLoginResponse> {
     try {
-      const response = await apiClient.post<LoginResponse>('/auth/login/', {
-        body: credentials,
-      });
+      const response = await apiClient.post<ServerLoginResponse>(
+        '/auth/login/',
+        {
+          body: credentials,
+        },
+      );
+      console.log('🚀 ~ authenticate ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Login failed');
