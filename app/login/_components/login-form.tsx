@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useTransition, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,13 +17,14 @@ import { Label } from '@/components/ui/label';
 import Link from 'next/link';
 import { login } from '@/app/login/actions/login.server';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { useForm } from '@tanstack/react-form';
 import { loginSchema } from '@/schemas/auth/login.schema';
 import { useLogin } from '../hooks/mutations/useLogin';
 
 export function LoginForm() {
   const [pending, start] = useTransition();
+  const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
   const { mutateAsync: login, isPending } = useLogin();
@@ -37,18 +38,21 @@ export function LoginForm() {
     onSubmit: async ({ value }) => {
       try {
         const res = await login(value);
+        console.log('res', res);
         if (res?.ok) {
           toast({
             title: 'Welcome back!',
             description: 'You are now signed in.',
+            duration: 2000,
           });
           router.push('/dashboard');
           return;
         }
         toast({
           title: 'Error',
-          description: res?.message || 'Invalid credentials',
+          description: 'Credenciales incorrectas',
           variant: 'destructive',
+          duration: 2000,
         });
       } catch (error) {
         const errorMessage =
@@ -141,21 +145,37 @@ export function LoginForm() {
             {(field) => (
               <div className="grid gap-2">
                 <Label htmlFor={field.name}>Password</Label>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="password"
-                  required
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  className={
-                    field.state.meta.errors.length > 0 &&
-                    field.state.meta.isTouched
-                      ? 'border-destructive'
-                      : ''
-                  }
-                />
+                <div className="relative">
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    className={
+                      field.state.meta.errors.length > 0 &&
+                      field.state.meta.isTouched
+                        ? 'border-destructive pr-10'
+                        : 'pr-10'
+                    }
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    onClick={() => setShowPassword(!showPassword)}
+                    disabled={field.state.value.length === 0}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
                 {field.state.meta.errors && field.state.meta.isTouched && (
                   <div className="text-sm text-red-500">
                     {field.state.meta.errors}
