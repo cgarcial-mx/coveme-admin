@@ -27,6 +27,15 @@ export async function login(credentials: LoginSchema): Promise<LoginResponse> {
     });
 
     c.set('auth-remember', credentials.remember ? '1' : '0', { path: '/' });
+    
+    // Cookie adicional accesible desde el cliente para inicializar el api-client
+    c.set('auth-initialized', 'true', {
+      httpOnly: false, // Accesible desde JavaScript
+      sameSite: 'lax',
+      path: '/',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: credentials.remember ? 60 * 60 * 24 * 30 : undefined,
+    });
 
     return {
       ok: true,

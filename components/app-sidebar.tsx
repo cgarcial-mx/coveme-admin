@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   Sidebar,
@@ -13,37 +13,69 @@ import {
   SidebarMenuButton,
   SidebarSeparator,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { Badge } from "@/components/ui/badge"
-import { Activity, BarChart2, Boxes, Bot, Building, CheckSquare, Cog, Database, FileCode2, Globe, HelpCircle, Home, Key, Layers, ListChecks, ListOrdered, Network, Package, PackageOpen, Plug, Puzzle, Settings, ShoppingBasket, Siren, Users, Bell, MessageSquare } from 'lucide-react'
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
+} from '@/components/ui/sidebar';
+import { Badge } from '@/components/ui/badge';
+import {
+  Activity,
+  BarChart2,
+  Boxes,
+  Bot,
+  Building,
+  CheckSquare,
+  Cog,
+  Database,
+  FileCode2,
+  Globe,
+  HelpCircle,
+  Home,
+  Key,
+  Layers,
+  ListChecks,
+  ListOrdered,
+  Network,
+  Package,
+  PackageOpen,
+  Plug,
+  Puzzle,
+  Settings,
+  ShoppingBasket,
+  Siren,
+  Users,
+  Bell,
+  MessageSquare,
+} from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import useUser from '@/hooks/useUser';
+import { useEffect } from 'react';
 
 const primaryItems = [
-  { title: "Dashboard", href: "/dashboard", icon: Home },
-  { title: "Clients", href: "/clients", icon: Users },
-  { title: "Products", href: "/products", icon: Package },
-  { title: "Brands", href: "/brands", icon: Layers },
-  { title: "Providers", href: "/providers", icon: Building },
-  { title: "Listings", href: "/listings", icon: ShoppingBasket },
-  { title: "Reviews", href: "/reviews", icon: MessageSquare },
-  { title: "Matching", href: "/matching", icon: ListChecks },
-  { title: "Orders", href: "/orders", icon: ListOrdered },
-  { title: "Notifications", href: "/notifications", icon: Bell },
-  { title: "Analytics", href: "/analytics", icon: BarChart2 },
-]
+  { title: 'Dashboard', href: '/dashboard', icon: Home },
+  { title: 'Clients', href: '/clients', icon: Users },
+  { title: 'Products', href: '/products', icon: Package },
+  { title: 'Brands', href: '/brands', icon: Layers },
+  { title: 'Providers', href: '/providers', icon: Building },
+  { title: 'Listings', href: '/listings', icon: ShoppingBasket },
+  { title: 'Reviews', href: '/reviews', icon: MessageSquare },
+  { title: 'Matching', href: '/matching', icon: ListChecks },
+  { title: 'Orders', href: '/orders', icon: ListOrdered },
+  { title: 'Notifications', href: '/notifications', icon: Bell },
+  { title: 'Analytics', href: '/analytics', icon: BarChart2 },
+];
 
 const adminItems = [
-  { title: "Settings", href: "/settings", icon: Settings },
-  { title: "Integrations", href: "/integrations", icon: Plug },
-  { title: "Monitoring", href: "/monitoring", icon: Activity },
-  { title: "Help & Support", href: "/support", icon: HelpCircle },
-  { title: "API", href: "/integrations/api", icon: FileCode2 },
-]
+  { title: 'Settings', href: '/settings', icon: Settings },
+  { title: 'Integrations', href: '/integrations', icon: Plug },
+  { title: 'Monitoring', href: '/monitoring', icon: Activity },
+  { title: 'Help & Support', href: '/support', icon: HelpCircle },
+  { title: 'API', href: '/integrations/api', icon: FileCode2 },
+];
 
 export function AppSidebar() {
-  const pathname = usePathname() || "/dashboard"
+  const pathname = usePathname() || '/dashboard';
+
+  const { data } = useUser();
 
   return (
     <Sidebar collapsible="icon">
@@ -51,10 +83,16 @@ export function AppSidebar() {
         <div className="flex items-center gap-2 rounded-md px-2 py-1.5">
           <Package className="size-5" />
           <div className="flex-1">
-            <div className="text-sm font-semibold leading-tight">OmniMarket</div>
-            <div className="text-xs text-muted-foreground leading-tight">Multi-marketplace Suite</div>
+            <div className="text-sm font-semibold leading-tight">
+              Marchante MX Admin
+            </div>
+            <div className="text-xs text-muted-foreground leading-tight">
+              {data?.user?.client_name || 'Prueba'}
+            </div>
           </div>
-          <Badge variant="secondary" className="rounded-sm">v1</Badge>
+          <Badge variant="secondary" className="rounded-sm">
+            v1
+          </Badge>
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -63,18 +101,25 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {primaryItems.map((item) => {
-                const isActive = pathname.startsWith(item.href)
-                const Icon = item.icon
+                const isActive = pathname.startsWith(item.href);
+                const Icon = item.icon;
                 return (
                   <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
-                      <Link href={item.href} className="flex items-center gap-2">
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={item.title}
+                    >
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-2"
+                      >
                         <Icon />
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
+                );
               })}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -88,7 +133,10 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Sync Center">
-                  <Link href="/settings/sync" className="flex items-center gap-2">
+                  <Link
+                    href="/settings/sync"
+                    className="flex items-center gap-2"
+                  >
                     <Network />
                     <span>Sync Center</span>
                   </Link>
@@ -96,7 +144,10 @@ export function AppSidebar() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Credentials">
-                  <Link href="/settings/marketplaces" className="flex items-center gap-2">
+                  <Link
+                    href="/settings/marketplaces"
+                    className="flex items-center gap-2"
+                  >
                     <Key />
                     <span>Credentials</span>
                   </Link>
@@ -104,7 +155,10 @@ export function AppSidebar() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Webhooks">
-                  <Link href="/integrations/webhooks" className="flex items-center gap-2">
+                  <Link
+                    href="/integrations/webhooks"
+                    className="flex items-center gap-2"
+                  >
                     <Siren />
                     <span>Webhooks</span>
                   </Link>
@@ -112,7 +166,10 @@ export function AppSidebar() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Data">
-                  <Link href="/integrations/data" className="flex items-center gap-2">
+                  <Link
+                    href="/integrations/data"
+                    className="flex items-center gap-2"
+                  >
                     <Database />
                     <span>Data</span>
                   </Link>
@@ -120,7 +177,10 @@ export function AppSidebar() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Connectors">
-                  <Link href="/integrations/connectors" className="flex items-center gap-2">
+                  <Link
+                    href="/integrations/connectors"
+                    className="flex items-center gap-2"
+                  >
                     <Puzzle />
                     <span>Connectors</span>
                   </Link>
@@ -137,18 +197,25 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {adminItems.map((item) => {
-                const isActive = pathname.startsWith(item.href)
-                const Icon = item.icon
+                const isActive = pathname.startsWith(item.href);
+                const Icon = item.icon;
                 return (
                   <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
-                      <Link href={item.href} className="flex items-center gap-2">
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={item.title}
+                    >
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-2"
+                      >
                         <Icon />
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                )
+                );
               })}
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Market Intelligence">
@@ -177,12 +244,14 @@ export function AppSidebar() {
             <span>System</span>
           </div>
           <div className="mt-1 grid grid-cols-2 gap-1 text-muted-foreground">
-            <span>Uptime</span><span className="text-right">99.98%</span>
-            <span>Latency</span><span className="text-right">120ms</span>
+            <span>Uptime</span>
+            <span className="text-right">99.98%</span>
+            <span>Latency</span>
+            <span className="text-right">120ms</span>
           </div>
         </div>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
