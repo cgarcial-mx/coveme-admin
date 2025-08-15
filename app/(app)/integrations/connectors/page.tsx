@@ -6,16 +6,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Plug, CheckCircle2, XCircle } from 'lucide-react';
 import { getConnectors } from './actions/connectors.server';
-
-const connectors = [
-  { id: 'c-amz', name: 'Amazon SP-API', status: 'Connected' as const },
-  { id: 'c-ebay', name: 'eBay Sell API', status: 'Not Connected' as const },
-  { id: 'c-shop', name: 'Shopify Admin API', status: 'Connected' as const },
-];
-
 export default async function Page() {
   const connectors = await getConnectors();
   console.log('🚀 ~ Page ~ connectors:', connectors);
@@ -43,14 +35,17 @@ export default async function Page() {
                 )}
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex items-center justify-between">
+            <CardContent className="flex items-center gap-2">
               {c.connection_status === 'connected' ? (
-                <Button variant="outline" size="sm">
+                <Button variant="destructive" size="sm">
                   Disconnect
                 </Button>
               ) : (
                 <Button size="sm">Connect</Button>
               )}
+              <Button variant="outline" size="sm">
+                Sync Listing
+              </Button>
             </CardContent>
           </Card>
         ))}

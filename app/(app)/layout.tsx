@@ -57,12 +57,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
             <Breadcrumbs />
             <div className="ml-auto flex items-center gap-2">
               <div className="hidden md:flex items-center gap-2">
-                <Search className="size-4 text-muted-foreground" />
                 <CommandMenu />
-                <Input
-                  placeholder="Search anything... (⌘K)"
-                  className="h-8 w-[220px]"
-                />
               </div>
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="size-5" />
