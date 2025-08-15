@@ -24,11 +24,11 @@ export interface AmazonCredentials {
 }
 
 export interface MercadoLibreCredentials {
-  access_token: string;
-  refresh_token: string;
   user_id: string;
   country_code: string;
-  site_id: string;
+  app_id: string;
+  secret_key: string;
+  redirect_uri: string;
 }
 
 export interface ShopifyCredentials {

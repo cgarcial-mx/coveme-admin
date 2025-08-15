@@ -7,10 +7,23 @@ import {
 } from '@/components/ui/card';
 import ShopifyCredentials from './_components/ShopifyCredentials';
 import { getMarketplaceCredentials } from './actions/credentials.actions';
+import AmazonCredentials from './_components/AmazonCredentials';
+import MercadoLibreCredentials from './_components/MercadoLibreCredentials';
 
 export default async function Page() {
   const credentials = await getMarketplaceCredentials();
-  console.log('🚀 ~ Page ~ credentials:', credentials);
+
+  const shopifyCredentials = credentials.find(
+    (credential) => credential.marketplace_type === 'shopify',
+  );
+
+  const amazonCredentials = credentials.find(
+    (credential) => credential.marketplace_type === 'amazon',
+  );
+
+  const mercadolibreCredentials = credentials.find(
+    (credential) => credential.marketplace_type === 'mercadolibre',
+  );
 
   return (
     <div className="space-y-4">
@@ -23,7 +36,9 @@ export default async function Page() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <ShopifyCredentials />
+          <AmazonCredentials credentials={amazonCredentials} />
+          <MercadoLibreCredentials credentials={mercadolibreCredentials} />
+          <ShopifyCredentials credentials={shopifyCredentials} />
         </CardContent>
       </Card>
     </div>
