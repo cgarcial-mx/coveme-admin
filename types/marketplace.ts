@@ -284,3 +284,147 @@ export const MARKETPLACE_SCHEMAS: Record<MarketplaceType, CredentialSchema> = {
     },
   },
 };
+
+// Marketplace Listings Types
+export interface MarketplaceListing {
+  id: number;
+  client_id: number;
+  product_id?: number;
+  marketplace_type: MarketplaceType;
+  marketplace_id: string;
+  external_sku?: string;
+  title?: string;
+  price?: string;
+  currency?: string;
+  inventory_quantity?: number;
+  status?: string;
+  is_fulfillment?: boolean;
+  listing_fee?: string;
+  shipment_fee?: string;
+  listing_type?: string;
+  official_store_name?: string;
+  thumbnail_url?: string;
+  permalink?: string;
+  metadata?: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+}
+
+// Request for creating a listing
+export interface CreateMarketplaceListingRequest {
+  client_id: number;
+  product_id?: number;
+  marketplace_type: MarketplaceType;
+  marketplace_id: string;
+  external_sku?: string;
+  title?: string;
+  price?: string;
+  currency?: string;
+  inventory_quantity?: number;
+  status?: string;
+  is_fulfillment?: boolean;
+  listing_fee?: string;
+  shipment_fee?: string;
+  listing_type?: string;
+  official_store_name?: string;
+  thumbnail_url?: string;
+  permalink?: string;
+  metadata?: Record<string, any>;
+}
+
+// Request for updating a listing
+export interface UpdateMarketplaceListingRequest {
+  product_id?: number;
+  external_sku?: string;
+  title?: string;
+  price?: string;
+  currency?: string;
+  inventory_quantity?: number;
+  status?: string;
+  is_fulfillment?: boolean;
+  listing_fee?: string;
+  shipment_fee?: string;
+  listing_type?: string;
+  official_store_name?: string;
+  thumbnail_url?: string;
+  permalink?: string;
+  metadata?: Record<string, any>;
+}
+
+// Filters for listing listings
+export interface MarketplaceListingFilters {
+  client?: number;
+  marketplace_type?: MarketplaceType;
+  status?: string;
+  is_fulfillment?: boolean;
+  price_min?: number;
+  price_max?: number;
+}
+
+// Response for listing listings
+export interface MarketplaceListingListResponse {
+  count: number;
+  next?: string;
+  previous?: string;
+  results: MarketplaceListing[];
+}
+
+// Bulk operations
+export interface BulkCreateListingsRequest {
+  listings: CreateMarketplaceListingRequest[];
+}
+
+export interface BulkUpdateListingsRequest {
+  ids: number[];
+  updates: Partial<UpdateMarketplaceListingRequest>;
+}
+
+// Validation and error types for listings
+export interface ListingValidationError {
+  field: string;
+  message: string;
+}
+
+export interface ListingValidationResponse {
+  is_valid: boolean;
+  errors?: ListingValidationError[];
+  warnings?: string[];
+}
+
+// Listing status constants
+export const LISTING_STATUSES = [
+  'active',
+  'inactive',
+  'pending',
+  'suspended',
+  'draft',
+] as const;
+
+export type ListingStatus = (typeof LISTING_STATUSES)[number];
+
+// Listing types constants
+export const LISTING_TYPES = [
+  'FBA',
+  'FBM',
+  'Dropshipping',
+  'Wholesale',
+  'Retail',
+] as const;
+
+export type ListingType = (typeof LISTING_TYPES)[number];
+
+// Currency constants
+export const SUPPORTED_CURRENCIES = [
+  'USD',
+  'EUR',
+  'GBP',
+  'MXN',
+  'BRL',
+  'ARS',
+  'CLP',
+  'COP',
+  'PEN',
+  'UYU',
+] as const;
+
+export type SupportedCurrency = (typeof SUPPORTED_CURRENCIES)[number];

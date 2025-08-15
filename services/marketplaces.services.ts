@@ -12,6 +12,7 @@ import {
   SyncResponse,
   MarketplaceType,
   MARKETPLACE_SCHEMAS,
+  MarketplaceListing,
 } from '@/types/marketplace';
 
 export const marketplaceCredentialsService = {
@@ -356,5 +357,18 @@ export const marketplaceCredentialsService = {
   ): Promise<MarketplaceCredential[]> {
     const response = await this.list({ connection_status: status });
     return response.results;
+  },
+
+  /**
+   * Obtener listings de todos los marketplaces
+   */
+  async getListings(): Promise<MarketplaceListing[]> {
+    const response = await apiClient.get<MarketplaceListing[]>(
+      '/marketplace-listings/',
+      {
+        requireAuth: true,
+      },
+    );
+    return response.data;
   },
 };
