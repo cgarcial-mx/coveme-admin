@@ -38,7 +38,6 @@ export function LoginForm() {
     onSubmit: async ({ value }) => {
       try {
         const res = await login(value);
-        console.log('res', res);
         if (res?.ok) {
           toast({
             title: 'Welcome back!',
@@ -79,7 +78,6 @@ export function LoginForm() {
       <CardContent className="grid gap-4">
         <form
           onSubmit={(e) => {
-            console.log('submit');
             e.preventDefault();
             e.stopPropagation();
             form.handleSubmit();
@@ -134,7 +132,6 @@ export function LoginForm() {
             name="password"
             validators={{
               onBlur: ({ value }) => {
-                console.log('onBlur', value);
                 if (!value) return 'Password is required';
                 if (value.length < 6)
                   return 'Password must be at least 6 characters';

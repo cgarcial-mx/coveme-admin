@@ -100,6 +100,23 @@ export class ApiClient {
         ...headers,
       };
 
+      // Handle authentication if required
+      if (requireAuth && typeof window === 'undefined') {
+        // Server-side: get token from cookies
+        const { cookies } = await import('next/headers');
+        const cookieStore = await cookies();
+        const token = cookieStore.get('auth-token')?.value;
+
+        if (token) {
+          finalHeaders.Authorization = `Bearer ${token}`;
+          this.log('Auth token added from cookies');
+        } else {
+          this.log(
+            'Warning: requireAuth=true but no auth token found in cookies',
+          );
+        }
+      }
+
       // Remove Content-Type for GET requests without body
       if (!body && method === 'GET') {
         delete finalHeaders['Content-Type'];

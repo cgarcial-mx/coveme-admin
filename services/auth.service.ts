@@ -27,7 +27,6 @@ export const authService = {
           body: credentials,
         },
       );
-      console.log('🚀 ~ authenticate ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Login failed');

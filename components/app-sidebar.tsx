@@ -64,6 +64,14 @@ const primaryItems = [
   { title: 'Analytics', href: '/analytics', icon: BarChart2 },
 ];
 
+const operationsItems = [
+  { title: 'Credentials', href: '/settings/marketplaces', icon: Key },
+  { title: 'Connectors', href: '/integrations/connectors', icon: Puzzle },
+  // { title: 'Sync Center', href: '/settings/sync', icon: Network },
+  // { title: 'Webhooks', href: '/integrations/webhooks', icon: Siren },
+  // { title: 'Data', href: '/integrations/data', icon: Database },
+];
+
 const adminItems = [
   { title: 'Settings', href: '/settings', icon: Settings },
   { title: 'Integrations', href: '/integrations', icon: Plug },
@@ -87,7 +95,7 @@ export function AppSidebar() {
               Marchante MX Admin
             </div>
             <div className="text-xs text-muted-foreground leading-tight">
-              {data?.user?.client_name || 'Prueba'}
+              {data?.user?.client_name || 'Cargando...'}
             </div>
           </div>
           <Badge variant="secondary" className="rounded-sm">
@@ -131,61 +139,27 @@ export function AppSidebar() {
           <SidebarGroupLabel>Operations</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Sync Center">
-                  <Link
-                    href="/settings/sync"
-                    className="flex items-center gap-2"
-                  >
-                    <Network />
-                    <span>Sync Center</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Credentials">
-                  <Link
-                    href="/settings/marketplaces"
-                    className="flex items-center gap-2"
-                  >
-                    <Key />
-                    <span>Credentials</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Webhooks">
-                  <Link
-                    href="/integrations/webhooks"
-                    className="flex items-center gap-2"
-                  >
-                    <Siren />
-                    <span>Webhooks</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Data">
-                  <Link
-                    href="/integrations/data"
-                    className="flex items-center gap-2"
-                  >
-                    <Database />
-                    <span>Data</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Connectors">
-                  <Link
-                    href="/integrations/connectors"
-                    className="flex items-center gap-2"
-                  >
-                    <Puzzle />
-                    <span>Connectors</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {operationsItems.map((item) => {
+                const isActive = pathname.startsWith(item.href);
+                const Icon = item.icon;
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      tooltip={item.title}
+                    >
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-2"
+                      >
+                        <Icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

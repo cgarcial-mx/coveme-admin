@@ -16,17 +16,3 @@ export async function getAuthToken(): Promise<string | null> {
   const token = c.get('auth-token')?.value;
   return token || null;
 }
-
-export async function getUser(): Promise<User | null> {
-  const c = await cookies();
-  const token = c.get('auth-token')?.value;
-  if (!token) {
-    return null;
-  }
-  try {
-    return await authService.getProfile();
-  } catch (error) {
-    console.error('Error fetching user', error);
-    return null;
-  }
-}
