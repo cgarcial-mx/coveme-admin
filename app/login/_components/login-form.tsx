@@ -15,11 +15,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
-import { login } from '@/app/login/actions/login.server';
 import { useRouter } from 'next/navigation';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { useForm } from '@tanstack/react-form';
-import { loginSchema } from '@/schemas/auth/login.schema';
 import { useLogin } from '../hooks/mutations/useLogin';
 
 export function LoginForm() {

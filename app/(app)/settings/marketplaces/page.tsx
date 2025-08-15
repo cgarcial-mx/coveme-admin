@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import ShopifyCredentials from './_components/ShopifyCredentials';
-import { getMarketplaceCredentials } from './actions/credentials.actions';
+import { getMarketplaceCredentials } from './actions/credentials.server';
 import AmazonCredentials from './_components/AmazonCredentials';
 import MercadoLibreCredentials from './_components/MercadoLibreCredentials';
 

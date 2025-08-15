@@ -127,7 +127,7 @@ export interface ValidationResponse {
 
 // Response para test de conexión
 export interface ConnectionTestResponse {
-  success: boolean;
+  status: string;
   message: string;
   connection_details?: {
     marketplace_name?: string;

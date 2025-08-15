@@ -18,6 +18,7 @@ import { UserNav } from '@/components/user-nav';
 import { logout } from './server-actions';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { UserHydrationWrapper } from '@/components/user-hydration-wrapper';
+import { TokenRefreshService } from '@/services/token-refresh.service';
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const cookieStore = await cookies();
@@ -27,8 +28,26 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
     redirect('/login');
   }
 
+  // Validate and refresh token if needed
+  let refreshedToken = token;
+
+  try {
+    const isValid = await TokenRefreshService.validateAndRefreshToken();
+
+    if (!isValid) {
+      redirect('/login');
+    }
+
+    // Get the potentially refreshed token
+    refreshedToken =
+      (await TokenRefreshService.refreshTokenIfNeeded()) || token;
+  } catch (error) {
+    // If refresh fails, redirect to login
+    redirect('/login');
+  }
+
   return (
-    <UserHydrationWrapper token={token}>
+    <UserHydrationWrapper token={refreshedToken}>
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>

@@ -234,6 +234,7 @@ export const marketplaceCredentialsService = {
           requireAuth: true,
         },
       );
+      console.log('🚀 ~ testConnection ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Failed to test connection');

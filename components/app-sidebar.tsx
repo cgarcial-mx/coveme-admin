@@ -95,7 +95,7 @@ export function AppSidebar() {
               Marchante MX Admin
             </div>
             <div className="text-xs text-muted-foreground leading-tight">
-              {data?.user?.client_name || 'Cargando...'}
+              {data?.user.client_name || 'Cargando...'}
             </div>
           </div>
           <Badge variant="secondary" className="rounded-sm">
