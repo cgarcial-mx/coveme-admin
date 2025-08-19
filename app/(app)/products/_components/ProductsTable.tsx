@@ -2,7 +2,7 @@
 
 import { Product } from '@/types/product';
 import { Button } from '@/components/ui/button';
-import { Badge, Filter, Pencil } from 'lucide-react';
+import { Filter, Pencil } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -31,7 +31,6 @@ const ProductsTable = ({
   products: Product[];
   caption?: string;
 }) => {
-  const [selected, setSelected] = useState<Product[]>([]);
   const [query, setQuery] = useState('');
   const columnHelper = createColumnHelper<Product>();
 
