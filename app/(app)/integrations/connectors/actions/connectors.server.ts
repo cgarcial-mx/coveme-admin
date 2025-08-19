@@ -11,3 +11,21 @@ export async function getConnectors() {
     return [];
   }
 }
+
+export const syncProductsAndListings = async ({
+  credentialsId,
+}: {
+  credentialsId: number;
+}) => {
+  try {
+    const response =
+      await marketplaceCredentialsService.syncProductsAndListings(
+        credentialsId,
+      );
+    console.log('🚀 ~ syncProductsAndListings ~ response:', response);
+    return response;
+  } catch (error) {
+    console.error('Error syncing products and listings:', error);
+    return null;
+  }
+};

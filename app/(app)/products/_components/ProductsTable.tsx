@@ -22,6 +22,7 @@ import {
   type Column,
 } from '@tanstack/react-table';
 import { Input } from '@/components/ui/input';
+import { formatDate } from '@/lib/utils';
 
 const ProductsTable = ({
   products,
@@ -67,6 +68,10 @@ const ProductsTable = ({
     }),
     columnHelper.accessor('updated_at', {
       header: 'Actualizado',
+      cell: ({ getValue }) => {
+        const value = getValue() as string;
+        return <span>{formatDate(value)}</span>;
+      },
     }),
     columnHelper.display({
       id: 'actions',
