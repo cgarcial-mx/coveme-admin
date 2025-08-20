@@ -3,6 +3,7 @@
 import { Product } from '@/types/product';
 import { Button } from '@/components/ui/button';
 import { Filter, Pencil } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import {
   Table,
   TableBody,
@@ -23,6 +24,8 @@ import {
 } from '@tanstack/react-table';
 import { Input } from '@/components/ui/input';
 import { formatDate } from '@/lib/utils';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useRouter } from 'next/navigation';
 
 const ProductsTable = ({
   products,
@@ -32,6 +35,7 @@ const ProductsTable = ({
   caption?: string;
 }) => {
   const [query, setQuery] = useState('');
+  const router = useRouter();
   const columnHelper = createColumnHelper<Product>();
 
   const columns = [
@@ -39,17 +43,7 @@ const ProductsTable = ({
       header: 'SKU',
     }),
     columnHelper.accessor('title', {
-      header: 'Title',
-    }),
-    columnHelper.accessor('brand_name', {
-      header: 'Brand',
-    }),
-    columnHelper.accessor('category', {
-      header: 'Category',
-      cell: ({ getValue }) => {
-        const category = getValue() as string;
-        return <span className="text-xs">{category}</span>;
-      },
+      header: 'Nombre',
     }),
     columnHelper.accessor('cost', {
       header: 'Precio',
@@ -59,11 +53,35 @@ const ProductsTable = ({
         return `$${value.toFixed(2)}`;
       },
     }),
+    columnHelper.accessor('brand_name', {
+      header: 'Marca',
+    }),
+    columnHelper.accessor('category', {
+      header: 'Categoria',
+      cell: ({ getValue }) => {
+        const category = getValue() as string;
+        if (!category) return '-';
+        return <Badge variant="outline">{category}</Badge>;
+      },
+    }),
+
     columnHelper.accessor('is_iva_included', {
       header: 'Iva incluido?',
+      cell: ({ getValue }) => {
+        const value = getValue() as boolean;
+        return <Checkbox checked={value} disabled className="size-4" />;
+      },
     }),
     columnHelper.accessor('is_supermarket', {
       header: 'Es Supermercado?',
+      cell: ({ getValue }) => {
+        const value = getValue() as boolean;
+        return (
+          <div className="flex items-center gap-2">
+            <Checkbox checked={value} disabled className="size-4 self-center" />
+          </div>
+        );
+      },
     }),
     columnHelper.accessor('updated_at', {
       header: 'Actualizado',
@@ -74,9 +92,15 @@ const ProductsTable = ({
     }),
     columnHelper.display({
       id: 'actions',
-      header: 'Actions',
+      // header: 'Actions',
       cell: ({ row }) => (
-        <Button variant="outline" size="sm">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            router.push(`/products/${row.original.id}`);
+          }}
+        >
           <Pencil className="mr-2 size-4" />
           Edit
         </Button>
@@ -136,7 +160,6 @@ const ProductsTable = ({
           </div> */}
       </div>
       <Table>
-        {caption && <TableCaption>{caption}</TableCaption>}
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>

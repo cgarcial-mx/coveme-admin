@@ -285,6 +285,22 @@ export const MARKETPLACE_SCHEMAS: Record<MarketplaceType, CredentialSchema> = {
   },
 };
 
+// Marketplace Listing Image Model
+export interface MarketplaceListingImage {
+  id: number;
+  listing_id: number;
+  external_id?: string;
+  position: number;
+  url: string;
+  alt_text?: string;
+  width?: number;
+  height?: number;
+  variant_ids: string[];
+  metadata: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+}
+
 // Marketplace Listings Types
 export interface MarketplaceListing {
   id: number;
@@ -308,11 +324,15 @@ export interface MarketplaceListing {
   metadata?: Record<string, any>;
   created_at: string;
   updated_at: string;
+
+  // New image-related fields
+  images?: MarketplaceListingImage[];
+  main_image_url?: string;
+  image_count?: number;
 }
 
 // Request for creating a listing
 export interface CreateMarketplaceListingRequest {
-  client_id: number;
   product_id?: number;
   marketplace_type: MarketplaceType;
   marketplace_id: string;
@@ -353,12 +373,14 @@ export interface UpdateMarketplaceListingRequest {
 
 // Filters for listing listings
 export interface MarketplaceListingFilters {
-  client?: number;
   marketplace_type?: MarketplaceType;
   status?: string;
   is_fulfillment?: boolean;
   price_min?: number;
   price_max?: number;
+  has_images?: boolean;
+  image_count_min?: number;
+  image_count_max?: number;
 }
 
 // Response for listing listings

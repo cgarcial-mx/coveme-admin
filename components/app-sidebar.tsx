@@ -52,21 +52,21 @@ import { useEffect } from 'react';
 
 const primaryItems = [
   { title: 'Dashboard', href: '/dashboard', icon: Home },
-  { title: 'Clients', href: '/clients', icon: Users },
-  { title: 'Products', href: '/products', icon: Package },
-  { title: 'Brands', href: '/brands', icon: Layers },
-  { title: 'Providers', href: '/providers', icon: Building },
+  // { title: 'Clients', href: '/clients', icon: Users },
+  { title: 'Productos', href: '/products', icon: Package },
+  { title: 'Marcas', href: '/brands', icon: Layers },
+  { title: 'Proveedores', href: '/providers', icon: Building },
   { title: 'Listings', href: '/listings', icon: ShoppingBasket },
   { title: 'Reviews', href: '/reviews', icon: MessageSquare },
-  { title: 'Matching', href: '/matching', icon: ListChecks },
-  { title: 'Orders', href: '/orders', icon: ListOrdered },
-  { title: 'Notifications', href: '/notifications', icon: Bell },
-  { title: 'Analytics', href: '/analytics', icon: BarChart2 },
+  { title: 'Coincidencias', href: '/matching', icon: ListChecks },
+  { title: 'Pedidos', href: '/orders', icon: ListOrdered },
+  { title: 'Notificaciones', href: '/notifications', icon: Bell },
+  // { title: 'Analytics', href: '/analytics', icon: BarChart2 },
 ];
 
 const operationsItems = [
-  { title: 'Credentials', href: '/settings/marketplaces', icon: Key },
-  { title: 'Connectors', href: '/integrations/connectors', icon: Puzzle },
+  { title: 'Credentiales', href: '/settings/marketplaces', icon: Key },
+  { title: 'Marketplaces', href: '/integrations/connectors', icon: Puzzle },
   // { title: 'Sync Center', href: '/settings/sync', icon: Network },
   // { title: 'Webhooks', href: '/integrations/webhooks', icon: Siren },
   // { title: 'Data', href: '/integrations/data', icon: Database },
@@ -90,7 +90,7 @@ export function AppSidebar() {
       <SidebarHeader className="px-2">
         <div className="flex items-center gap-2 rounded-md px-2 py-1.5">
           <Package className="size-5" />
-          <div className="flex-1">
+          <div className="flex-1 group-data-[collapsible=icon]:hidden">
             <div className="text-sm font-semibold leading-tight">
               Marchante MX Admin
             </div>
@@ -98,8 +98,11 @@ export function AppSidebar() {
               {data?.user?.client_name || 'Cargando...'}
             </div>
           </div>
-          <Badge variant="secondary" className="rounded-sm">
-            v1
+          <Badge
+            variant="secondary"
+            className="rounded-sm group-data-[collapsible=icon]:hidden"
+          >
+            {process.env.NEXT_PUBLIC_APP_VERSION || 'v1'}
           </Badge>
         </div>
       </SidebarHeader>
@@ -166,7 +169,7 @@ export function AppSidebar() {
 
         <SidebarSeparator />
 
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Admin</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -209,9 +212,9 @@ export function AppSidebar() {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarContent>
-      <SidebarFooter className="px-2 pb-2">
+      {/* <SidebarFooter className="px-2 pb-2">
         <div className="rounded-md border px-2 py-1.5 text-xs">
           <div className="flex items-center gap-1 text-muted-foreground">
             <Cog className="size-3.5" />
@@ -224,7 +227,7 @@ export function AppSidebar() {
             <span className="text-right">120ms</span>
           </div>
         </div>
-      </SidebarFooter>
+      </SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
   );

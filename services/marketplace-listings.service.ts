@@ -9,11 +9,13 @@ import {
   BulkCreateListingsRequest,
   BulkUpdateListingsRequest,
   ListingValidationResponse,
+  MarketplaceListingImage,
 } from '@/types/marketplace';
 
 export const marketplaceListingsService = {
   /**
    * Create a new marketplace listing
+   * Note: client_id is automatically extracted from JWT token
    */
   async create(
     data: CreateMarketplaceListingRequest,
@@ -39,6 +41,7 @@ export const marketplaceListingsService = {
 
   /**
    * Get all listings with optional filters
+   * Note: client_id is automatically filtered by authenticated user
    */
   async list(
     filters?: MarketplaceListingFilters,
@@ -46,9 +49,6 @@ export const marketplaceListingsService = {
     try {
       const queryParams = new URLSearchParams();
 
-      if (filters?.client) {
-        queryParams.append('client', filters.client.toString());
-      }
       if (filters?.marketplace_type) {
         queryParams.append('marketplace_type', filters.marketplace_type);
       }
@@ -63,6 +63,21 @@ export const marketplaceListingsService = {
       }
       if (filters?.price_max) {
         queryParams.append('price_max', filters.price_max.toString());
+      }
+      if (filters?.has_images !== undefined) {
+        queryParams.append('has_images', filters.has_images.toString());
+      }
+      if (filters?.image_count_min) {
+        queryParams.append(
+          'image_count_min',
+          filters.image_count_min.toString(),
+        );
+      }
+      if (filters?.image_count_max) {
+        queryParams.append(
+          'image_count_max',
+          filters.image_count_max.toString(),
+        );
       }
 
       const url = `/marketplace-listings/${
@@ -88,6 +103,7 @@ export const marketplaceListingsService = {
 
   /**
    * Get a specific listing by ID
+   * Note: client_id is automatically filtered by authenticated user
    */
   async getById(id: number): Promise<MarketplaceListing> {
     try {
@@ -110,6 +126,7 @@ export const marketplaceListingsService = {
 
   /**
    * Update a listing completely (PUT)
+   * Note: client_id cannot be modified
    */
   async update(
     id: number,
@@ -136,6 +153,7 @@ export const marketplaceListingsService = {
 
   /**
    * Update a listing partially (PATCH)
+   * Note: client_id cannot be modified
    */
   async partialUpdate(
     id: number,
@@ -162,6 +180,7 @@ export const marketplaceListingsService = {
 
   /**
    * Delete a listing
+   * Note: client_id is automatically filtered by authenticated user
    */
   async delete(id: number): Promise<void> {
     try {
@@ -179,6 +198,7 @@ export const marketplaceListingsService = {
 
   /**
    * Bulk create multiple listings
+   * Note: client_id is automatically applied to all listings
    */
   async bulkCreate(
     data: BulkCreateListingsRequest,
@@ -204,6 +224,7 @@ export const marketplaceListingsService = {
 
   /**
    * Bulk update multiple listings
+   * Note: client_id cannot be modified
    */
   async bulkUpdate(
     data: BulkUpdateListingsRequest,
@@ -228,15 +249,8 @@ export const marketplaceListingsService = {
   },
 
   /**
-   * Get all listings for a specific client
-   */
-  async getByClient(clientId: number): Promise<MarketplaceListing[]> {
-    const response = await this.list({ client: clientId });
-    return response.results;
-  },
-
-  /**
    * Get all listings for a specific marketplace type
+   * Note: client_id is automatically filtered by authenticated user
    */
   async getByMarketplaceType(
     marketplaceType: string,
@@ -249,6 +263,7 @@ export const marketplaceListingsService = {
 
   /**
    * Get all listings with a specific status
+   * Note: client_id is automatically filtered by authenticated user
    */
   async getByStatus(status: string): Promise<MarketplaceListing[]> {
     const response = await this.list({ status });
@@ -257,6 +272,7 @@ export const marketplaceListingsService = {
 
   /**
    * Get all fulfillment listings
+   * Note: client_id is automatically filtered by authenticated user
    */
   async getFulfillmentListings(): Promise<MarketplaceListing[]> {
     const response = await this.list({ is_fulfillment: true });
@@ -265,6 +281,7 @@ export const marketplaceListingsService = {
 
   /**
    * Get all non-fulfillment listings
+   * Note: client_id is automatically filtered by authenticated user
    */
   async getNonFulfillmentListings(): Promise<MarketplaceListing[]> {
     const response = await this.list({ is_fulfillment: false });
@@ -273,6 +290,7 @@ export const marketplaceListingsService = {
 
   /**
    * Get listings within a price range
+   * Note: client_id is automatically filtered by authenticated user
    */
   async getByPriceRange(
     minPrice: number,
@@ -287,6 +305,7 @@ export const marketplaceListingsService = {
 
   /**
    * Get listings for a specific product
+   * Note: client_id is automatically filtered by authenticated user
    */
   async getByProduct(productId: number): Promise<MarketplaceListing[]> {
     // This would need a custom endpoint or we can filter client-side
@@ -297,7 +316,39 @@ export const marketplaceListingsService = {
   },
 
   /**
+   * Get listings that have images
+   * Note: client_id is automatically filtered by authenticated user
+   */
+  async getListingsWithImages(): Promise<MarketplaceListing[]> {
+    const response = await this.list({ has_images: true });
+    return response.results;
+  },
+
+  /**
+   * Get listings with a minimum number of images
+   * Note: client_id is automatically filtered by authenticated user
+   */
+  async getListingsWithMinImages(
+    minImages: number,
+  ): Promise<MarketplaceListing[]> {
+    const response = await this.list({ image_count_min: minImages });
+    return response.results;
+  },
+
+  /**
+   * Get listings with a maximum number of images
+   * Note: client_id is automatically filtered by authenticated user
+   */
+  async getListingsWithMaxImages(
+    maxImages: number,
+  ): Promise<MarketplaceListing[]> {
+    const response = await this.list({ image_count_max: maxImages });
+    return response.results;
+  },
+
+  /**
    * Search listings by title or external SKU
+   * Note: client_id is automatically filtered by authenticated user
    */
   async search(
     query: string,
@@ -317,6 +368,7 @@ export const marketplaceListingsService = {
 
   /**
    * Get listings count by status
+   * Note: client_id is automatically filtered by authenticated user
    */
   async getCountByStatus(): Promise<Record<string, number>> {
     const allListings = await this.list();
@@ -332,6 +384,7 @@ export const marketplaceListingsService = {
 
   /**
    * Get listings count by marketplace type
+   * Note: client_id is automatically filtered by authenticated user
    */
   async getCountByMarketplaceType(): Promise<Record<string, number>> {
     const allListings = await this.list();
@@ -346,6 +399,28 @@ export const marketplaceListingsService = {
   },
 
   /**
+   * Get listings count by image availability
+   * Note: client_id is automatically filtered by authenticated user
+   */
+  async getCountByImageAvailability(): Promise<Record<string, number>> {
+    const allListings = await this.list();
+    const countByImages: Record<string, number> = {
+      with_images: 0,
+      without_images: 0,
+    };
+
+    allListings.results.forEach((listing) => {
+      if (listing.image_count && listing.image_count > 0) {
+        countByImages.with_images++;
+      } else {
+        countByImages.without_images++;
+      }
+    });
+
+    return countByImages;
+  },
+
+  /**
    * Validate listing data before sending to server
    */
   validateListingData(
@@ -355,9 +430,6 @@ export const marketplaceListingsService = {
     const warnings: string[] = [];
 
     // Required field validation
-    if (!data.client_id) {
-      errors.push({ field: 'client_id', message: 'Client ID is required' });
-    }
     if (!data.marketplace_type) {
       errors.push({
         field: 'marketplace_type',

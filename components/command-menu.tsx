@@ -12,25 +12,31 @@ import {
 import { useRouter } from 'next/navigation';
 import {
   Home,
-  Users,
   Package,
   ShoppingBasket,
   ListChecks,
   ListOrdered,
-  BarChart2,
-  Settings,
   Search,
+  MessageSquare,
+  Bell,
+  Layers,
+  Building,
+  Puzzle,
+  Key,
 } from 'lucide-react';
 
 const items = [
   { label: 'Dashboard', href: '/dashboard', icon: Home },
-  { label: 'Clients', href: '/clients', icon: Users },
-  { label: 'Products', href: '/products', icon: Package },
+  { label: 'Productos', href: '/products', icon: Package },
+  { label: 'Marcas', href: '/brands', icon: Layers },
+  { label: 'Proveedores', href: '/providers', icon: Building },
   { label: 'Listings', href: '/listings', icon: ShoppingBasket },
-  { label: 'Matching', href: '/matching', icon: ListChecks },
-  { label: 'Orders', href: '/orders', icon: ListOrdered },
-  { label: 'Analytics', href: '/analytics', icon: BarChart2 },
-  { label: 'Settings', href: '/settings', icon: Settings },
+  { label: 'Reviews', href: '/reviews', icon: MessageSquare },
+  { label: 'Coincidencias', href: '/matching', icon: ListChecks },
+  { label: 'Pedidos', href: '/orders', icon: ListOrdered },
+  { label: 'Notificaciones', href: '/notifications', icon: Bell },
+  { label: 'Credentiales', href: '/settings/marketplaces', icon: Key },
+  { label: 'Conectores', href: '/integrations/connectors', icon: Puzzle },
 ];
 
 export function CommandMenu() {
@@ -60,13 +66,13 @@ export function CommandMenu() {
           Ir a (
           {typeof window !== 'undefined' &&
           navigator.platform.toLowerCase().includes('mac')
-            ? 'Ctrl + K'
-            : '⌘ + K'}
+            ? '⌘ + K'
+            : 'Ctrl + K'}
           )
         </span>
       </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search pages, entities, actions..." />
+        <CommandInput placeholder="Navegar a..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Navigate">
@@ -77,7 +83,7 @@ export function CommandMenu() {
                   key={item.href}
                   onSelect={() => {
                     setOpen(false);
-                    router.push(item.href);
+                    router.replace(item.href);
                   }}
                 >
                   <Icon className="mr-2 size-4" />
