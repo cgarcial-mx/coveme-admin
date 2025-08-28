@@ -25,7 +25,7 @@ export default async function Page() {
         <CardHeader>
           <CardTitle>Catalogo de productos</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <ProductsTable products={products} caption="Catalogo de productos" />
         </CardContent>
       </Card>

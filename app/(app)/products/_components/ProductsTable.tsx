@@ -39,7 +39,7 @@ const ProductsTable = ({
   const columnHelper = createColumnHelper<Product>();
 
   const columns = [
-    columnHelper.accessor('internal_sku', {
+    columnHelper.accessor('id', {
       header: 'SKU',
     }),
     columnHelper.accessor('title', {
@@ -130,8 +130,8 @@ const ProductsTable = ({
   });
 
   return (
-    <div className="rounded-md border">
-      <div className="flex flex-wrap items-center gap-2 p-2">
+    <div className="border-t rounded-b-md">
+      <div className="flex flex-wrap items-center gap-2 p-4 border-b bg-card">
         <Input
           placeholder="Search..."
           className="h-8 w-40"
@@ -159,35 +159,43 @@ const ProductsTable = ({
             )}
           </div> */}
       </div>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="w-8">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <div className="min-w-full">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="whitespace-nowrap min-w-[120px]"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className="whitespace-nowrap min-w-[120px]"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };

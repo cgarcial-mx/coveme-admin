@@ -4,11 +4,14 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { MarketplaceCredential } from '@/types/marketplace';
 import { useForm } from '@tanstack/react-form';
+import { cn } from '@/lib/utils';
 
 const MercadoLibreCredentials = ({
   credentials,
+  isDialog = false,
 }: {
   credentials?: MarketplaceCredential;
+  isDialog?: boolean;
 }) => {
   const isMercadoLibreCredentials = (
     creds: MarketplaceCredential['credentials'],
@@ -59,8 +62,11 @@ const MercadoLibreCredentials = ({
   });
 
   return (
-    <div key={'mercadolibre'} className="rounded-md border p-3">
-      <div className="mb-3 text-md font-bold">Mercado Libre</div>
+    <div
+      key={'mercadolibre'}
+      className={cn('rounded-md border p-3', isDialog && 'p-3')}
+    >
+      {!isDialog && <div className="mb-3 text-md font-bold">Mercado Libre</div>}
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -68,7 +74,12 @@ const MercadoLibreCredentials = ({
           form.handleSubmit();
         }}
       >
-        <div className="grid gap-3 md:grid-cols-3">
+        <div
+          className={cn(
+            'grid gap-3',
+            isDialog ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-3',
+          )}
+        >
           <form.Field
             name="marketplace_name"
             children={(field) => (
@@ -162,11 +173,13 @@ const MercadoLibreCredentials = ({
               </div>
             )}
           />
-          <div className="md:col-span-3 flex gap-2">
-            <Button type="button" variant="outline">
-              Probar conexión
-            </Button>
-            <Button type="submit">Guardar</Button>
+          <div className={cn('flex gap-2', isDialog ? '' : 'md:col-span-3')}>
+            {!isDialog && (
+              <Button type="button" variant="outline">
+                Probar conexión
+              </Button>
+            )}
+            <Button type="submit">{isDialog ? 'Agregar' : 'Guardar'}</Button>
           </div>
         </div>
       </form>

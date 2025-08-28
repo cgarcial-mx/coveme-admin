@@ -11,15 +11,24 @@ import {
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { marketplaceCredentialsService } from '@/services/marketplaces.services';
+import { CardContent, CardTitle } from '@/components/ui/card';
+import { marketplaceCredentialStatusParse } from '@/utils/helpers';
+import { Badge } from '@/components/ui/badge';
+import { PencilIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const ShopifyCredentials = ({
   credentials,
+  isDialog = false,
 }: {
   credentials?: MarketplaceCredential;
+  isDialog?: boolean;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTestingConnection, setIsTestingConnection] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isCreating, setIsCreating] = useState(isDialog);
+
   const router = useRouter();
   const { toast } = useToast();
 
@@ -130,79 +139,128 @@ const ShopifyCredentials = ({
   };
 
   return (
-    <div key={'shopify'} className="rounded-md border p-3">
-      <div className="mb-3 text-md font-bold">Shopify</div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
+    <CardContent className={cn('space-y-6', isDialog && 'p-0')}>
+      <div
+        key={'shopify'}
+        className={cn('rounded-md border p-3', isDialog && 'p-3')}
       >
-        <div className="grid gap-3 md:grid-cols-3">
-          <form.Field
-            name="marketplace_name"
-            children={(field) => (
-              <div className="grid gap-2">
-                <Label htmlFor="shopify-store-name">
-                  Nombre de Marketplace
-                </Label>
-                <Input
-                  id="shopify-store-name"
-                  placeholder="••••••"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              </div>
-            )}
-          />
-          <form.Field
-            name="shop_url"
-            children={(field) => (
-              <div className="grid gap-2">
-                <Label htmlFor="shopify-shop-url">Shop URL</Label>
-                <Input
-                  id="shopify-shop-url"
-                  placeholder="••••••.myshopify.com"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              </div>
-            )}
-          />
-          <form.Field
-            name="access_token"
-            children={(field) => (
-              <div className="grid gap-2">
-                <Label htmlFor="shopify-access-token">Access Token</Label>
-                <Input
-                  id="shopify-access-token"
-                  placeholder="••••••"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-              </div>
-            )}
-          />
-          <div className="md:col-span-3 flex gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleTestConnection}
-              disabled={isTestingConnection || !credentials?.id}
+        {!isDialog && (
+          <div className="flex items-center gap-2 mb-3">
+            <CardTitle>{credentials?.name}</CardTitle>
+            <Badge
+              variant={
+                credentials?.connection_status === 'connected'
+                  ? 'secondary'
+                  : 'destructive'
+              }
             >
-              {isTestingConnection ? 'Probando...' : 'Probar conexión'}
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Guardando...' : 'Guardar'}
-            </Button>
+              {marketplaceCredentialStatusParse(
+                credentials?.connection_status ?? 'disconnected',
+              )}
+            </Badge>
           </div>
-        </div>
-      </form>
-    </div>
+        )}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+        >
+          <div
+            className={cn(
+              'grid gap-3',
+              isDialog
+                ? 'grid-cols-1'
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+            )}
+          >
+            <form.Field
+              name="marketplace_name"
+              children={(field) => (
+                <div className="grid gap-2">
+                  <Label htmlFor="shopify-store-name">
+                    Nombre de Marketplace
+                  </Label>
+                  <Input
+                    id="shopify-store-name"
+                    placeholder="••••••"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    disabled={!isEditing && !isCreating}
+                  />
+                </div>
+              )}
+            />
+            <form.Field
+              name="shop_url"
+              children={(field) => (
+                <div className="grid gap-2">
+                  <Label htmlFor="shopify-shop-url">Shop URL</Label>
+                  <Input
+                    id="shopify-shop-url"
+                    placeholder="••••••.myshopify.com"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    disabled={!isEditing && !isCreating}
+                  />
+                </div>
+              )}
+            />
+            <form.Field
+              name="access_token"
+              children={(field) => (
+                <div className="grid gap-2">
+                  <Label htmlFor="shopify-access-token">Access Token</Label>
+                  <Input
+                    id="shopify-access-token"
+                    placeholder="••••••"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    disabled={!isEditing && !isCreating}
+                  />
+                </div>
+              )}
+            />
+            <div className={cn('flex gap-2', isDialog ? '' : 'md:col-span-3')}>
+              {!isCreating && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={handleTestConnection}
+                  disabled={
+                    isTestingConnection ||
+                    isEditing ||
+                    isCreating ||
+                    !credentials?.id
+                  }
+                >
+                  {isTestingConnection ? 'Probando...' : 'Probar conexión'}
+                </Button>
+              )}
+              {!isEditing && !isCreating && (
+                <Button variant="outline" onClick={() => setIsEditing(true)}>
+                  <PencilIcon className="w-4 h-4" />
+                  Editar
+                </Button>
+              )}
+              {(isEditing || isCreating) && (
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading
+                    ? 'Guardando...'
+                    : isDialog
+                    ? 'Agregar'
+                    : 'Guardar'}
+                </Button>
+              )}
+            </div>
+          </div>
+        </form>
+      </div>
+    </CardContent>
   );
 };
 

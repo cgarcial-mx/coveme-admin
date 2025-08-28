@@ -48,6 +48,7 @@ export default function Page({ params }: Props) {
     isLoading: listingsLoading,
     error: listingsError,
   } = useProductListings(id);
+  console.log('🚀 ~ Page ~ listings:', listings);
 
   if (productError) {
     notFound();
@@ -80,14 +81,14 @@ export default function Page({ params }: Props) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="flex items-center gap-1">
+          {/* <Badge variant="secondary" className="flex items-center gap-1">
             <Package className="h-3 w-3" />
-            Active
-          </Badge>
+            {product.}
+          </Badge> */}
           <Button asChild variant="outline">
-            <Link href={`/listings?product=${product.id}`}>View Listings</Link>
+            <Link href={`/listings?product=${product.id}`}>Ver Listings</Link>
           </Button>
-          <Button>Edit Product</Button>
+          <Button>Editar Producto</Button>
         </div>
       </div>
 
@@ -130,44 +131,42 @@ export default function Page({ params }: Props) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Tag className="h-4 w-4" />
-                Product Details
+                Detalles del Producto
               </CardTitle>
               <CardDescription>
-                Attributes and pricing information
+                Atributos e información de precios
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm">
+            <CardContent className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Brand</span>
+                <span className="text-muted-foreground">Marca</span>
                 <span className="font-medium">
                   {product.brand_name || 'N/A'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Sub-brand</span>
+                <span className="text-muted-foreground">Sub-marca</span>
                 <span className="font-medium">
                   {product.subbrand_name || 'N/A'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Provider</span>
+                <span className="text-muted-foreground">Proveedor</span>
                 <span className="font-medium">
                   {product.provider_name || 'N/A'}
                 </span>
               </div>
               <Separator />
               <div className="flex justify-between">
-                <span className="text-muted-foreground">SKU</span>
-                <span className="font-mono font-medium">
-                  {product.internal_sku}
-                </span>
+                <span className="text-muted-foreground">Categoria</span>
+                <Badge variant="secondary" className="font-medium">
+                  <span className="font-medium">
+                    {product.category || 'N/A'}
+                  </span>
+                </Badge>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Category</span>
-                <span className="font-medium">{product.category || 'N/A'}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Cost</span>
+                <span className="text-muted-foreground">Precio</span>
                 <span className="font-medium">
                   {product.cost ? `$${product.cost}` : 'N/A'}
                 </span>
@@ -175,7 +174,7 @@ export default function Page({ params }: Props) {
               {product.cost_with_discount && (
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
-                    Cost (with discount)
+                    Precio (con descuento)
                   </span>
                   <span className="font-medium text-green-600">
                     ${product.cost_with_discount}
@@ -188,30 +187,33 @@ export default function Page({ params }: Props) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Package className="h-4 w-4" />
-                Physical Properties
+                <Package className="w-4" />
+                Propiedades Físicas
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm">
+            <CardContent className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Weight</span>
+                <span className="text-muted-foreground">Peso</span>
                 <span className="font-medium">
                   {product.weight ? `${product.weight} kg` : 'N/A'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Dimensions</span>
+                <span className="text-muted-foreground">Dimensiones</span>
                 <span className="font-medium text-right">
-                  {product.dimensions
-                    ? `${product.dimensions.length} × ${product.dimensions.width} × ${product.dimensions.height}`
+                  {product.dimensions &&
+                  (product.dimensions.length != null ||
+                    product.dimensions.width != null ||
+                    product.dimensions.height != null)
+                    ? `${product.dimensions.length ?? 'N/A'} × ${
+                        product.dimensions.width ?? 'N/A'
+                      } × ${product.dimensions.height ?? 'N/A'}`
                     : 'N/A'}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Barcode</span>
-                <span className="font-mono font-medium">
-                  {product.barcode || 'N/A'}
-                </span>
+                <span className="font-medium">{product.barcode || 'N/A'}</span>
               </div>
             </CardContent>
           </Card>
@@ -223,9 +225,9 @@ export default function Page({ params }: Props) {
                 Metadata
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm">
+            <CardContent className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Created</span>
+                <span className="text-muted-foreground">Creado</span>
                 <span className="font-medium">
                   {product.created_at
                     ? new Date(product.created_at).toLocaleDateString()
@@ -233,7 +235,7 @@ export default function Page({ params }: Props) {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Last Updated</span>
+                <span className="text-muted-foreground">Actualizado</span>
                 <span className="font-medium">
                   {product.updated_at
                     ? new Date(product.updated_at).toLocaleDateString()
@@ -241,7 +243,7 @@ export default function Page({ params }: Props) {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">IVA Included</span>
+                <span className="text-muted-foreground">IVA Incluido</span>
                 <Badge
                   variant={product.is_iva_included ? 'default' : 'secondary'}
                 >
@@ -249,7 +251,7 @@ export default function Page({ params }: Props) {
                 </Badge>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Supermarket</span>
+                <span className="text-muted-foreground">Supermercado</span>
                 <Badge
                   variant={product.is_supermarket ? 'default' : 'secondary'}
                 >
@@ -262,12 +264,12 @@ export default function Page({ params }: Props) {
       </div>
 
       {/* Tabs Section */}
-      <Tabs defaultValue="history" className="space-y-4">
+      <Tabs defaultValue="listings" className="space-y-4">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="history">Price History</TabsTrigger>
-          <TabsTrigger value="matches">Matches</TabsTrigger>
-          <TabsTrigger value="listings">Marketplace Listings</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsTrigger value="listings">Listings</TabsTrigger>
+          <TabsTrigger value="analytics">Analítica</TabsTrigger>
+          <TabsTrigger value="history">Historial de Precios</TabsTrigger>
+          <TabsTrigger value="matches">Coincidencias</TabsTrigger>
         </TabsList>
 
         <TabsContent value="history">

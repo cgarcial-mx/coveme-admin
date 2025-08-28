@@ -68,7 +68,7 @@ const ListingGridView = () => {
           </div>
           <CardHeader className="flex-1">
             <Badge>{l.marketplace_type}</Badge>
-            <CardTitle>SKU: {l.marketplace_id}</CardTitle>
+            <CardTitle>SKU: {l.external_sku ?? 'N/A'}</CardTitle>
             <CardDescription className="text-base">{l.title}</CardDescription>
             <CardDescription className="text-sm text-muted-foreground mt-2">
               {l.inventory_quantity && l.inventory_quantity > 0

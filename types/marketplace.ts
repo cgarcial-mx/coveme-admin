@@ -66,6 +66,7 @@ export type MarketplaceCredentials =
 export interface MarketplaceCredential {
   id: number;
   client_id: number;
+  name: string;
   marketplace_type: MarketplaceType;
   marketplace_name: string;
   credentials: MarketplaceCredentials;
