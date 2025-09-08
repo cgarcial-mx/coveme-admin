@@ -73,7 +73,6 @@ export const marketplaceCredentialsService = {
           requireAuth: true,
         },
       );
-      console.log('🚀 ~ list ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Failed to fetch marketplace credentials');

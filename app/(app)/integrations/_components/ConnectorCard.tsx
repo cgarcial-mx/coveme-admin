@@ -24,7 +24,6 @@ const ConnectorCard = ({
       credentialsId: connectorId,
     });
 
-    console.log(response);
     toast.success('Sync exitoso');
   };
 

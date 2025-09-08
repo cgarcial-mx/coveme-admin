@@ -18,7 +18,6 @@ export const authService = {
           body: credentials,
         },
       );
-      console.log('🚀 ~ authenticate ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Login failed');
@@ -67,7 +66,6 @@ export const authService = {
       const response = await apiClient.get<UserResponse>('/auth/profile/', {
         requireAuth: true,
       });
-      console.log('🚀 ~ getProfile ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Failed to fetch profile');

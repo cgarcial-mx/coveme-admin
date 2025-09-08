@@ -39,21 +39,21 @@ const ProductsTable = ({
   const columnHelper = createColumnHelper<Product>();
 
   const columns = [
-    columnHelper.accessor('id', {
+    columnHelper.accessor('internalSku', {
       header: 'SKU',
     }),
     columnHelper.accessor('title', {
       header: 'Nombre',
     }),
-    columnHelper.accessor('cost', {
+    columnHelper.accessor('price', {
       header: 'Precio',
       cell: ({ getValue }) => {
-        const value = getValue() as number | undefined;
+        const value = getValue() as string | undefined;
         if (!value) return '-';
-        return `$${value.toFixed(2)}`;
+        return `$${value}`;
       },
     }),
-    columnHelper.accessor('brand_name', {
+    columnHelper.accessor('brandName', {
       header: 'Marca',
     }),
     columnHelper.accessor('category', {
@@ -65,14 +65,14 @@ const ProductsTable = ({
       },
     }),
 
-    columnHelper.accessor('is_iva_included', {
+    columnHelper.accessor('isIvaIncluded', {
       header: 'Iva incluido?',
       cell: ({ getValue }) => {
         const value = getValue() as boolean;
         return <Checkbox checked={value} disabled className="size-4" />;
       },
     }),
-    columnHelper.accessor('is_supermarket', {
+    columnHelper.accessor('isSupermarket', {
       header: 'Es Supermercado?',
       cell: ({ getValue }) => {
         const value = getValue() as boolean;
@@ -83,7 +83,7 @@ const ProductsTable = ({
         );
       },
     }),
-    columnHelper.accessor('updated_at', {
+    columnHelper.accessor('updatedAt', {
       header: 'Actualizado',
       cell: ({ getValue }) => {
         const value = getValue() as string;
@@ -113,12 +113,12 @@ const ProductsTable = ({
       products.filter(
         (row: Product) =>
           row.title?.toLowerCase().includes(query.toLowerCase()) ||
-          row.internal_sku?.toLowerCase().includes(query.toLowerCase()) ||
-          row.brand_name?.toLowerCase().includes(query.toLowerCase()) ||
+          row.internalSku?.toLowerCase().includes(query.toLowerCase()) ||
+          row.brandName?.toLowerCase().includes(query.toLowerCase()) ||
           row.category?.toLowerCase().includes(query.toLowerCase()) ||
           row.cost?.toString().includes(query) ||
-          row.is_iva_included?.toString().includes(query) ||
-          row.is_supermarket?.toString().includes(query),
+          row.isIvaIncluded?.toString().includes(query) ||
+          row.isSupermarket?.toString().includes(query),
       ),
     [products, query],
   );

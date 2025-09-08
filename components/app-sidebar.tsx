@@ -70,7 +70,6 @@ export function AppSidebar() {
   const pathname = usePathname() || '/dashboard';
 
   const { data } = useUser();
-  console.log('🚀 ~ AppSidebar ~ data:', data);
 
   return (
     <Sidebar collapsible="icon">

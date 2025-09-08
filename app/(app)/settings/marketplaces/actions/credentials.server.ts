@@ -5,8 +5,6 @@ export const getMarketplaceCredentials = async () => {
   try {
     const response = await marketplaceCredentialsService.list();
 
-    console.log('🚀 ~ getMarketplaceCredentials ~ response:', response);
-
     return response.data;
   } catch (error) {
     console.error('Error fetching marketplace credentials:', error);

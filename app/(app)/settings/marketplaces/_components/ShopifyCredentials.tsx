@@ -24,7 +24,6 @@ const ShopifyCredentials = ({
   credentials?: MarketplaceCredential;
   isDialog?: boolean;
 }) => {
-  console.log('🚀 ~ ShopifyCredentials ~ credentials:', credentials);
   const [isLoading, setIsLoading] = useState(false);
   const [isTestingConnection, setIsTestingConnection] = useState(false);
   const [isEditing, setIsEditing] = useState(false);

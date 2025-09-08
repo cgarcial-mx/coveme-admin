@@ -3,15 +3,15 @@
 // Producto maestro
 export interface Product {
   id: number;
-  internal_sku: string; // SKU interno único
+  internalSku: string; // SKU interno único
   title: string; // Título del producto
   description?: string; // Descripción opcional
-  brand_id?: number; // ID de la marca
-  brand_name?: string; // Nombre de la marca
-  subbrand_id?: number; // ID de la sub-marca
-  subbrand_name?: string; // Nombre de la sub-marca
-  provider_id?: number; // ID del proveedor
-  provider_name?: string; // Nombre del proveedor
+  brandId?: number; // ID de la marca
+  brandName?: string; // Nombre de la marca
+  subbrandId?: number; // ID de la sub-marca
+  subbrandName?: string; // Nombre de la sub-marca
+  providerId?: number; // ID del proveedor
+  providerName?: string; // Nombre del proveedor
   category?: string; // Categoría del producto
   weight?: string; // Peso en kg
   dimensions: {
@@ -21,13 +21,14 @@ export interface Product {
     height: string;
   };
   barcode?: string; // Código de barras
+  price?: string; // Precio base
   cost?: string; // Costo base
-  cost_with_discount?: string; // Costo con descuento
-  is_iva_included: boolean; // IVA incluido
-  is_supermarket: boolean; // Es producto de supermercado
-  created_by_id?: number; // Usuario que lo creó
-  created_at: string; // Fecha de creación ISO
-  updated_at: string; // Fecha de última actualización ISO
+  costWithDiscount?: string; // Costo con descuento
+  isIvaIncluded: boolean; // IVA incluido
+  isSupermarket: boolean; // Es producto de supermercado
+  createdById?: number; // Usuario que lo creó
+  createdAt: string; // Fecha de creación ISO
+  updatedAt: string; // Fecha de última actualización ISO
 }
 
 // Request para crear producto
@@ -36,7 +37,7 @@ export interface CreateProductRequest {
   title: string;
   description?: string;
   brand_id?: number;
-  subbrand_id?: number;
+  subbrandId?: number;
   provider_id?: number;
   category?: string;
   weight?: string;
@@ -242,14 +243,31 @@ export interface ProviderFilters {
 
 // Respuestas paginadas
 export interface PaginatedResponse<T> {
-  count: number;
-  next?: string;
-  previous?: string;
-  results: T[];
+  T: T[];
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
 }
 
 // Tipos específicos de respuesta
-export type ProductListResponse = PaginatedResponse<Product>;
+export type ProductListResponse = {
+  products: Product[];
+  pagination: {
+    limit: number;
+    page: number;
+    pages: number;
+    total: number;
+  };
+};
+
+export type ProductListServerResponse = {
+  data: ProductListResponse;
+  success: boolean;
+  message: string;
+};
 export type BrandListResponse = PaginatedResponse<Brand>;
 export type SubBrandListResponse = PaginatedResponse<SubBrand>;
 export type ProviderListResponse = PaginatedResponse<Provider>;

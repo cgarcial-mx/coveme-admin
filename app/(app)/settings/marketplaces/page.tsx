@@ -3,7 +3,6 @@ import InnerContent from './_components/InnerContent';
 
 export default async function Page() {
   const credentialsResponse = await getMarketplaceCredentials();
-  console.log('🚀 ~ Page ~ credentials:', credentialsResponse);
 
   const shopifyCredentials = credentialsResponse.credentials.filter(
     (credential) => credential.marketplaceType === 'shopify',

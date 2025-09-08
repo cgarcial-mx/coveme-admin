@@ -30,6 +30,7 @@ import {
   ProductTracing,
   ProductTracingFilters,
   ProductTracingListResponse,
+  ProductListServerResponse,
 } from '@/types/product';
 
 // ============================================================================
@@ -64,7 +65,7 @@ export const productsService = {
         queryParams.toString() ? `?${queryParams.toString()}` : ''
       }`;
 
-      const response = await apiClient.get<ProductListResponse>(url, {
+      const response = await apiClient.get<ProductListServerResponse>(url, {
         requireAuth: true,
       });
 
@@ -72,7 +73,7 @@ export const productsService = {
         throw new Error('Failed to fetch products');
       }
 
-      return response.data;
+      return response.data.data;
     } catch (error) {
       throw new Error(handleApiError(error).message);
     }

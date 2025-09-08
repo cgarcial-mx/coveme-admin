@@ -9,7 +9,6 @@ import { cookies } from 'next/headers';
 export async function login(credentials: LoginSchema): Promise<LoginResponse> {
   try {
     const res = await authService.authenticate(credentials);
-    console.log('🚀 ~ login ~ res:', res);
 
     const c = await cookies();
     c.set('auth-token', res.data.accessToken, {

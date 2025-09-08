@@ -99,7 +99,6 @@ export class ApiClient {
         ...this.config.defaultHeaders,
         ...headers,
       };
-      console.log('finalHeaders', finalHeaders);
 
       // Handle authentication if required
       if (requireAuth && typeof window === 'undefined') {
@@ -150,8 +149,6 @@ export class ApiClient {
       } else {
         data = (await response.blob()) as T;
       }
-
-      console.log('data', data);
 
       return {
         data,
