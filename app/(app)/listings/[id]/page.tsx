@@ -37,7 +37,6 @@ type Props = { params: Promise<{ id: string }> };
 export default function Page({ params }: Props) {
   const { id } = use(params);
   const { data: listing, isLoading, error } = useGetListing(id);
-  console.log('🚀 ~ Page ~ listing:', listing);
 
   if (error) {
     return (

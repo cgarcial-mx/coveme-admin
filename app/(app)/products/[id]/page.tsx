@@ -48,7 +48,6 @@ export default function Page({ params }: Props) {
     isLoading: listingsLoading,
     error: listingsError,
   } = useProductListings(id);
-  console.log('🚀 ~ Page ~ listings:', listings);
 
   if (productError) {
     notFound();

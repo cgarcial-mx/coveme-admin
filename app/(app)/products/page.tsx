@@ -6,7 +6,6 @@ import ProductsTable from './_components/ProductsTable';
 
 export default async function Page() {
   const products = await getProducts();
-  console.log('🚀 ~ Page ~ products:', products);
 
   return (
     <div className="space-y-4">

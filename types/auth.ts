@@ -5,21 +5,26 @@ export interface LoginCredentials {
 }
 
 export interface ServerLoginResponse {
-  access: string;
-  refresh: string;
-  user: {
-    id: number;
-    username: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    role: string;
-    client: number;
-    client_name: string;
-  };
-  permissions: {
-    endpoints: string[];
-    categories: string[];
+  success: boolean;
+  message: string;
+  data: {
+    accessToken: string;
+    refreshToken: string;
+    user: {
+      id: number;
+      username: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+      role: string;
+      client: number;
+      clientName: string;
+      permissions: {
+        endpoints: string[];
+        categories: string[];
+      };
+    };
+    expiresIn: number;
   };
 }
 
@@ -34,11 +39,11 @@ export interface LoginResponse {
     id: number;
     username: string;
     email: string;
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     role: string;
     client: number;
-    client_name: string;
+    clientName: string;
   };
   permissions: {
     endpoints: string[];
@@ -46,4 +51,24 @@ export interface LoginResponse {
   };
   message?: string;
   code?: string;
+}
+
+export interface UserResponse {
+  success: boolean;
+  message: string;
+  data: User;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  client: string;
+  clientName: string;
+  isSuperuser: boolean;
+  isActive: boolean;
+  clientId: string;
 }

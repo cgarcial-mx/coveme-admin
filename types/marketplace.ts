@@ -65,25 +65,26 @@ export type MarketplaceCredentials =
 // Interface principal para marketplace credentials
 export interface MarketplaceCredential {
   id: number;
-  client_id: number;
+  clientId: number;
   name: string;
-  marketplace_type: MarketplaceType;
-  marketplace_name: string;
+  marketplaceType: MarketplaceType;
+  marketplaceName: string;
   credentials: MarketplaceCredentials;
-  webhook_url?: string;
-  connection_status: ConnectionStatus;
-  last_sync_date?: string;
+  webhookUrl?: string;
+  connectionStatus: ConnectionStatus;
+  lastSyncDate?: string;
   created_at: string;
   updated_at: string;
-  is_active: boolean;
+  isActive: boolean;
 }
 
 // Request para crear credenciales
 export interface CreateMarketplaceCredentialRequest {
-  marketplace_type: MarketplaceType;
-  marketplace_name: string;
+  marketplaceType: MarketplaceType;
+  marketplaceName: string;
   credentials: MarketplaceCredentials;
-  webhook_url?: string;
+  webhookUrl?: string;
+  name: string;
 }
 
 // Request para actualizar credenciales
@@ -104,10 +105,17 @@ export interface MarketplaceCredentialFilters {
 
 // Response para listar credenciales
 export interface MarketplaceCredentialListResponse {
-  count: number;
-  next?: string;
-  previous?: string;
-  results: MarketplaceCredential[];
+  success: boolean;
+  message: string;
+  data: {
+    credentials: MarketplaceCredential[];
+    pagination: {
+      limit: number;
+      page: number;
+      pages: number;
+      total: number;
+    };
+  };
 }
 
 // Schema de validación para credenciales

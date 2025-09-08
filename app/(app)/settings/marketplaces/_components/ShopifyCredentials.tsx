@@ -24,6 +24,7 @@ const ShopifyCredentials = ({
   credentials?: MarketplaceCredential;
   isDialog?: boolean;
 }) => {
+  console.log('🚀 ~ ShopifyCredentials ~ credentials:', credentials);
   const [isLoading, setIsLoading] = useState(false);
   const [isTestingConnection, setIsTestingConnection] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -40,7 +41,7 @@ const ShopifyCredentials = ({
 
   const form = useForm({
     defaultValues: {
-      marketplace_name: credentials?.marketplace_name || '',
+      marketplaceName: credentials?.marketplaceName || '',
       shop_url:
         credentials && isShopifyCredentials(credentials.credentials)
           ? credentials.credentials.shop_url
@@ -55,7 +56,7 @@ const ShopifyCredentials = ({
       try {
         const result = await upsertMarketplaceCredentials({
           marketplaceType: 'shopify',
-          marketplaceName: value.marketplace_name,
+          marketplaceName: value.marketplaceName,
           credentials: {
             shop_url: value.shop_url,
             access_token: value.access_token,
@@ -113,7 +114,6 @@ const ShopifyCredentials = ({
       const result = await testConnection({
         credentialsId: credentials.id,
       });
-      console.log('🚀 ~ handleTestConnection ~ result:', result);
       if (result?.status === 'success') {
         toast({
           title: 'Éxito',
@@ -149,13 +149,13 @@ const ShopifyCredentials = ({
             <CardTitle>{credentials?.name}</CardTitle>
             <Badge
               variant={
-                credentials?.connection_status === 'connected'
+                credentials?.connectionStatus === 'connected'
                   ? 'secondary'
                   : 'destructive'
               }
             >
               {marketplaceCredentialStatusParse(
-                credentials?.connection_status ?? 'disconnected',
+                credentials?.connectionStatus ?? 'disconnected',
               )}
             </Badge>
           </div>
@@ -176,7 +176,7 @@ const ShopifyCredentials = ({
             )}
           >
             <form.Field
-              name="marketplace_name"
+              name="marketplaceName"
               children={(field) => (
                 <div className="grid gap-2">
                   <Label htmlFor="shopify-store-name">
@@ -229,7 +229,6 @@ const ShopifyCredentials = ({
               {!isCreating && (
                 <Button
                   type="button"
-                  variant="secondary"
                   onClick={handleTestConnection}
                   disabled={
                     isTestingConnection ||

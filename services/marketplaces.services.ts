@@ -67,14 +67,13 @@ export const marketplaceCredentialsService = {
         queryParams.toString() ? `?${queryParams.toString()}` : ''
       }`;
 
-      console.log('🚀 ~ marketplaceCredentialsService ~ url:', url);
-
       const response = await apiClient.get<MarketplaceCredentialListResponse>(
         url,
         {
           requireAuth: true,
         },
       );
+      console.log('🚀 ~ list ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Failed to fetch marketplace credentials');
@@ -230,12 +229,11 @@ export const marketplaceCredentialsService = {
   async testConnection(id: number): Promise<ConnectionTestResponse> {
     try {
       const response = await apiClient.post<ConnectionTestResponse>(
-        `/marketplace-credentials/${id}/test_connection/`,
+        `/marketplace-credentials/${id}/test-connection/`,
         {
           requireAuth: true,
         },
       );
-      console.log('🚀 ~ testConnection ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Failed to test connection');
@@ -253,7 +251,7 @@ export const marketplaceCredentialsService = {
   async syncProductsAndListings(id: number): Promise<SyncResponse> {
     try {
       const response = await apiClient.post<SyncResponse>(
-        `/marketplace-credentials/${id}/sync_products_and_listings/`,
+        `/marketplace-credentials/${id}/sync-products-and-listings/`,
         {
           requireAuth: true,
         },

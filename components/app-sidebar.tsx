@@ -7,7 +7,6 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarFooter,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
@@ -17,38 +16,25 @@ import {
 import { Badge } from '@/components/ui/badge';
 import {
   Activity,
-  BarChart2,
-  Boxes,
-  Bot,
   Building,
-  CheckSquare,
-  Cog,
-  Database,
   FileCode2,
-  Globe,
   HelpCircle,
   Home,
   Key,
   Layers,
   ListChecks,
   ListOrdered,
-  Network,
   Package,
-  PackageOpen,
   Plug,
   Puzzle,
   Settings,
   ShoppingBasket,
-  Siren,
-  Users,
   Bell,
   MessageSquare,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
 import useUser from '@/hooks/useUser';
-import { useEffect } from 'react';
 
 const primaryItems = [
   { title: 'Dashboard', href: '/dashboard', icon: Home },
@@ -84,6 +70,7 @@ export function AppSidebar() {
   const pathname = usePathname() || '/dashboard';
 
   const { data } = useUser();
+  console.log('🚀 ~ AppSidebar ~ data:', data);
 
   return (
     <Sidebar collapsible="icon">
@@ -95,7 +82,7 @@ export function AppSidebar() {
               Marchante MX Admin
             </div>
             <div className="text-xs text-muted-foreground leading-tight">
-              {data?.user?.client_name || 'Cargando...'}
+              {data?.clientId || 'Cargando...'}
             </div>
           </div>
           <Badge

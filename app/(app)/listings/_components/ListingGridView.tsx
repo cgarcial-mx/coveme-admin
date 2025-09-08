@@ -16,7 +16,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const ListingGridView = () => {
   const { data: listings, isLoading } = useGetListings();
-  console.log('🚀 ~ ListingGridView ~ listings:', listings);
 
   if (isLoading) {
     return (

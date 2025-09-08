@@ -4,12 +4,16 @@ import { MarketplaceCredential, MarketplaceType } from '@/types/marketplace';
 export const getMarketplaceCredentials = async () => {
   try {
     const response = await marketplaceCredentialsService.list();
+
     console.log('🚀 ~ getMarketplaceCredentials ~ response:', response);
 
-    return response.results;
+    return response.data;
   } catch (error) {
     console.error('Error fetching marketplace credentials:', error);
-    return [];
+    return {
+      credentials: [],
+      pagination: { page: 1, limit: 20, total: 0, pages: 0 },
+    };
   }
 };
 
@@ -24,11 +28,11 @@ export const upsertMarketplaceCredentials = async ({
 }) => {
   try {
     const response = await marketplaceCredentialsService.create({
-      marketplace_type: marketplaceType,
-      marketplace_name: marketplaceName,
+      marketplaceType,
+      marketplaceName,
       credentials,
+      name: `${marketplaceName} - ${marketplaceType}`,
     });
-    console.log('🚀 ~ upsertMarketplaceCredentials ~ response:', response);
 
     return response;
   } catch (error) {
@@ -46,7 +50,6 @@ export const testConnection = async ({
     const response = await marketplaceCredentialsService.testConnection(
       credentialsId,
     );
-    console.log('🚀 ~ testConnection ~ response:', response);
     return response;
   } catch (error) {
     console.error('Error testing connection:', error);

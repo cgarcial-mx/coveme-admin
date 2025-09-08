@@ -56,7 +56,6 @@ const MercadoLibreCredentials = ({
           : '',
     },
     onSubmit: ({ value }) => {
-      console.log('🚀 ~ handleSubmit ~ data:', value);
       // Aquí puedes agregar la lógica para guardar las credenciales
     },
   });

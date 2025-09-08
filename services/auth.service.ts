@@ -1,20 +1,11 @@
 import { apiClient } from '@/lib/api/api-instance';
 import { handleApiError } from '@/lib/api/handle-api-error';
-import { LoginCredentials, ServerLoginResponse } from '@/types/auth';
-
-export interface User {
-  user: {
-    id: number;
-    email: string;
-    first_name: string;
-    last_name: string;
-    is_active: boolean;
-    date_joined: string;
-    client_name: string;
-    client: number;
-  };
-  permissions: string[];
-}
+import {
+  LoginCredentials,
+  ServerLoginResponse,
+  User,
+  UserResponse,
+} from '@/types/auth';
 
 export const authService = {
   async authenticate(
@@ -27,12 +18,13 @@ export const authService = {
           body: credentials,
         },
       );
+      console.log('🚀 ~ authenticate ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Login failed');
       }
 
-      apiClient.setAuthToken(response.data.access);
+      apiClient.setAuthToken(response.data.data.accessToken);
       return response.data;
     } catch (error) {
       throw new Error(handleApiError(error).message);
@@ -72,15 +64,16 @@ export const authService = {
 
   async getProfile(): Promise<User> {
     try {
-      const response = await apiClient.get<User>('/auth/profile/', {
+      const response = await apiClient.get<UserResponse>('/auth/profile/', {
         requireAuth: true,
       });
+      console.log('🚀 ~ getProfile ~ response:', response);
 
       if (!response.ok) {
         throw new Error('Failed to fetch profile');
       }
 
-      return response.data;
+      return response.data.data;
     } catch (error) {
       throw new Error(handleApiError(error).message);
     }

@@ -9,9 +9,10 @@ import { cookies } from 'next/headers';
 export async function login(credentials: LoginSchema): Promise<LoginResponse> {
   try {
     const res = await authService.authenticate(credentials);
+    console.log('🚀 ~ login ~ res:', res);
 
     const c = await cookies();
-    c.set('auth-token', res.access, {
+    c.set('auth-token', res.data.accessToken, {
       httpOnly: true,
       sameSite: 'lax',
       path: '/',
@@ -19,7 +20,7 @@ export async function login(credentials: LoginSchema): Promise<LoginResponse> {
       maxAge: credentials.remember ? 60 * 60 * 24 * 30 : undefined,
     });
 
-    c.set('refresh-token', res.refresh, {
+    c.set('refresh-token', res.data.refreshToken, {
       httpOnly: true,
       sameSite: 'lax',
       path: '/',
@@ -27,7 +28,7 @@ export async function login(credentials: LoginSchema): Promise<LoginResponse> {
     });
 
     c.set('auth-remember', credentials.remember ? '1' : '0', { path: '/' });
-    
+
     // Cookie adicional accesible desde el cliente para inicializar el api-client
     c.set('auth-initialized', 'true', {
       httpOnly: false, // Accesible desde JavaScript
@@ -39,8 +40,8 @@ export async function login(credentials: LoginSchema): Promise<LoginResponse> {
 
     return {
       ok: true,
-      user: res.user,
-      permissions: res.permissions,
+      user: res.data.user,
+      permissions: res.data.user.permissions,
     };
   } catch (error) {
     return handleApiError(error) as LoginResponse;
