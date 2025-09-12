@@ -31,6 +31,14 @@ export interface Product {
   updatedAt: string; // Fecha de última actualización ISO
 }
 
+export interface ProductTable extends Product {
+  status: string; // Estado del producto
+  marketplaceListings: MarketplaceListing[];
+  salesLast30Days: number;
+  margin: number;
+  profit: number;
+}
+
 // Request para crear producto
 export interface CreateProductRequest {
   internal_sku: string;
@@ -268,6 +276,13 @@ export type ProductListServerResponse = {
   success: boolean;
   message: string;
 };
+
+export type ProductServerResponse = {
+  data: Product;
+  success: boolean;
+  message: string;
+};
+
 export type BrandListResponse = PaginatedResponse<Brand>;
 export type SubBrandListResponse = PaginatedResponse<SubBrand>;
 export type ProviderListResponse = PaginatedResponse<Provider>;

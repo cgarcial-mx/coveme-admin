@@ -1,13 +1,12 @@
 'use client';
 
-import { Product } from '@/types/product';
+import { MarketplaceListing, Product, ProductTable } from '@/types/product';
 import { Button } from '@/components/ui/button';
 import { Filter, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -20,23 +19,23 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  type Column,
 } from '@tanstack/react-table';
 import { Input } from '@/components/ui/input';
 import { formatDate } from '@/lib/utils';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { getMarginColor } from '@/utils/helpers';
 
 const ProductsTable = ({
   products,
   caption,
 }: {
-  products: Product[];
+  products: ProductTable[];
   caption?: string;
 }) => {
   const [query, setQuery] = useState('');
   const router = useRouter();
-  const columnHelper = createColumnHelper<Product>();
+  const columnHelper = createColumnHelper<ProductTable>();
 
   const columns = [
     columnHelper.accessor('internalSku', {
@@ -44,6 +43,15 @@ const ProductsTable = ({
     }),
     columnHelper.accessor('title', {
       header: 'Nombre',
+      cell: ({ getValue, row }) => {
+        const value = getValue() as string;
+        if (!value) return '-';
+        return (
+          <Link className="underline" href={`/products/${row.original.id}`}>
+            {value}
+          </Link>
+        );
+      },
     }),
     columnHelper.accessor('price', {
       header: 'Precio',
@@ -61,26 +69,55 @@ const ProductsTable = ({
       cell: ({ getValue }) => {
         const category = getValue() as string;
         if (!category) return '-';
-        return <Badge variant="outline">{category}</Badge>;
+        return category;
       },
     }),
-
-    columnHelper.accessor('isIvaIncluded', {
-      header: 'Iva incluido?',
+    columnHelper.accessor('marketplaceListings', {
+      header: 'Marketplaces',
       cell: ({ getValue }) => {
-        const value = getValue() as boolean;
-        return <Checkbox checked={value} disabled className="size-4" />;
+        const value = (getValue() as MarketplaceListing[]) ?? [
+          { marketplace_type: 'Amazon' },
+          { marketplace_type: 'Shopify' },
+        ];
+        return value.map((listing) => (
+          <Badge variant="outline">{listing.marketplace_type}</Badge>
+        ));
       },
     }),
-    columnHelper.accessor('isSupermarket', {
-      header: 'Es Supermercado?',
+    columnHelper.accessor('salesLast30Days', {
+      header: 'Ventas últimos 30 días',
       cell: ({ getValue }) => {
-        const value = getValue() as boolean;
+        const value = getValue() as number;
+        if (!value) return '-';
         return (
           <div className="flex items-center gap-2">
-            <Checkbox checked={value} disabled className="size-4 self-center" />
+            <span>{value}</span>
           </div>
         );
+      },
+    }),
+    columnHelper.accessor('margin', {
+      header: 'Margen',
+      cell: ({ getValue }) => {
+        const value = (getValue() as number) ?? 0;
+        return (
+          <div className="flex items-center gap-2">
+            <Badge className={getMarginColor(value)}>{value.toFixed(1)}%</Badge>
+            {value > 25 && (
+              <div className="text-xs text-green-600 mt-1">
+                Tienes el mejor precio DH
+              </div>
+            )}
+          </div>
+        );
+      },
+    }),
+    columnHelper.accessor('profit', {
+      header: 'Ingresos',
+      cell: ({ getValue }) => {
+        const value = getValue() as number;
+        if (!value) return '-';
+        return <span>${value.toFixed(2)}</span>;
       },
     }),
     columnHelper.accessor('updatedAt', {
@@ -89,22 +126,6 @@ const ProductsTable = ({
         const value = getValue() as string;
         return <span>{formatDate(value)}</span>;
       },
-    }),
-    columnHelper.display({
-      id: 'actions',
-      // header: 'Actions',
-      cell: ({ row }) => (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            router.push(`/products/${row.original.id}`);
-          }}
-        >
-          <Pencil className="mr-2 size-4" />
-          Edit
-        </Button>
-      ),
     }),
   ];
 

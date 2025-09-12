@@ -31,6 +31,7 @@ import {
   ProductTracingFilters,
   ProductTracingListResponse,
   ProductListServerResponse,
+  ProductServerResponse,
 } from '@/types/product';
 
 // ============================================================================
@@ -102,17 +103,20 @@ export const productsService = {
   /**
    * Obtener detalles de un producto específico
    */
-  async getById(id: number): Promise<Product> {
+  async getById(id: string): Promise<Product> {
     try {
-      const response = await apiClient.get<Product>(`/products/${id}/`, {
-        requireAuth: true,
-      });
+      const response = await apiClient.get<ProductServerResponse>(
+        `/products/${id}/`,
+        {
+          requireAuth: true,
+        },
+      );
 
       if (!response.ok) {
         throw new Error('Failed to fetch product');
       }
 
-      return response.data;
+      return response.data.data;
     } catch (error) {
       throw new Error(handleApiError(error).message);
     }
